@@ -33,7 +33,7 @@ es = Elasticsearch(
 ```
 
 ### 3️⃣ Gerando Consultas com OpenAI
-Quando o usuário faz uma pergunta, o código utiliza a OpenAI para gerar uma consulta Elasticsearch (DSL) correspondente.
+Quando o usuário faz uma pergunta, o código utiliza a OpenAI para gerar uma consulta Elasticsearch (DSL) correspondente. Lembre-se de adicionar contexto sobre o local onde os dados serão buscados, como por exemplo o Schema do índice e o que alguns valores podem representar.
 
 ```python
 def generate_dsl_query(question):
@@ -111,7 +111,10 @@ ELASTICSEARCH_ENDPOINT=SeuEndpointElasticsearch
 ELASTICSEARCH_API_KEY=SuaChaveElasticsearch
 INDEX_NAME=NomeDoIndex
 OPENAI_MODEL=ModeloEscolhido
+BOT_NAME=NomeDoBot
 ```
+
+Como criar uma API Key: [LINK](https://www.elastic.co/guide/en/kibana/current/api-keys.html)
 
 ### 3️⃣ Execute a Aplicação
 Para rodar a aplicação Flask, use o seguinte comando:
