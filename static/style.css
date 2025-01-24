@@ -1,0 +1,168 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f9fb;
+    color: #333;
+}
+
+.h3 {
+    font-size: 16px;
+    color: #0277bd;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #0277bd;
+    color: white;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header img {
+    height: 40px;
+    margin-right: 15px;
+}
+
+#chat-container {
+    width: 70%;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 30px auto;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+}
+
+#messages {
+    height: 400px;
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding-right: 10px;
+}
+
+.message {
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.message.user {
+    justify-content: flex-end;
+}
+
+.message p {
+    display: inline-block;
+    padding: 12px;
+    border-radius: 8px;
+    margin: 0;
+    max-width: 70%;
+}
+
+.message.user p {
+    background-color: #e1f5fe;
+    color: #0277bd;
+}
+
+.message.bot p {
+    background-color: #eceff1;
+    color: #455a64;
+}
+
+#user-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+}
+
+.action-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#send-button {
+    padding: 12px 25px;
+    background-color: #0277bd;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+#send-button:hover {
+    background-color: #01579b;
+}
+
+#send-button:focus {
+    outline: none;
+}
+
+#debug-toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#debug-toggle-label {
+    font-size: 14px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 34px;
+    height: 20px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 20px;
+    transition: 0.4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.4s;
+}
+
+input:checked+.slider {
+    background-color: #0277bd;
+}
+
+input:checked+.slider:before {
+    transform: translateX(14px);
+}

@@ -14,7 +14,8 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 ELASTICSEARCH_ENDPOINT = os.getenv("ELASTICSEARCH_ENDPOINT")
 ELASTICSEARCH_API_KEY = os.getenv("ELASTICSEARCH_API_KEY")
 INDEX_NAME = os.getenv("INDEX_NAME")
-OPENAI_MODEL= os.getenv("OPENAI_MODEL")
+OPENAI_MODEL = os.getenv("OPENAI_MODEL")
+BOT_NAME = os.getenv("BOT_NAME")
 
 openai.api_key = OPENAI_API_KEY
 
@@ -30,12 +31,12 @@ def generate_dsl_query(question):
     """
     prompt = f"""
     Instructions:
-    - Your name now is Elastic Financial Assistant
+    - Your name now is "{BOT_NAME}"
     - Convert the following question into an Elasticsearch Query DSL, using this mapping properties:
 
     "properties": {{
-      "name": {{"type": "keyword"}},
-      "salary": {{"type": "float"}}
+    "name": {{"type": "keyword"}},
+    "salary": {{"type": "float"}}
     }}
 
     Question: "{question}"
@@ -48,12 +49,13 @@ def generate_dsl_query(question):
             messages=[{"role": "system", "content": "You are an Elasticsearch Query DSL expert."},
                     {"role": "user", "content": prompt}]
         )
-    except OpenAIError as e:
+    except Exception as e:
         print(f"Error: {e}")
         return "Failed to generate response from OpenAI"
 
     # Parse the response and return the generated query
     dsl_query = response.choices[0].message.content
+    print(dsl_query)
     return dsl_query.strip()
 
 def execute_query(index, query_dsl):
@@ -74,7 +76,8 @@ def format_response(question, es_response):
     
     prompt = f"""
     Instructions:
-    - Your name now is Elastic Financial Assistant
+    - Your name now is "{BOT_NAME}"
+    - Your must answer the question in the same language of the question
     - Convert the following document in a natural language to answer the question:
 
     Question: "{question}"
@@ -85,10 +88,11 @@ def format_response(question, es_response):
     try:
         response = openai.chat.completions.create(
             model=OPENAI_MODEL,
+            #model="mistral-nemo-instruct-2407",
             messages=[{"role": "system", "content": "You are an Elasticsearch Query DSL expert."},
                     {"role": "user", "content": prompt}]
         )
-    except OpenAIError as e:
+    except Exception as e:
         return "Could not process the response."
 
     # Parse the response and return the generated query
@@ -98,7 +102,7 @@ def format_response(question, es_response):
 # Route to serve the index.html file
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", bot_name=BOT_NAME)
 
 # Flask route for the API endpoint
 @app.route("/ask", methods=["POST"])
@@ -115,7 +119,7 @@ def ask_question():
     es_response = execute_query(index, dsl_query)
     answer = format_response(question, es_response)
 
-    return jsonify({"answer": answer})
+    return jsonify({"answer": answer,"dsl_query": dsl_query})
 
 if __name__ == "__main__":
     app.run(debug=True)
